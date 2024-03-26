@@ -20,6 +20,12 @@ RUN echo "gem: --no-document" >> /etc/gemrc \
     nodejs \
     tzdata
 
+RUN curl -ks 'https://curl.se/ca/cacert.pem' -o '/usr/local/share/ca-certificates/EnterpriseRootCA.crt'
+RUN /usr/sbin/update-ca-certificates
+ENV SSL_CERT_FILE='/usr/local/share/ca-certificates/EnterpriseRootCA.crt'
+
+WORKDIR /app
+
 COPY [".ruby-version", "Gemfile", "Gemfile.lock", "/app/"]
 
 RUN apk add --no-cache --virtual build-dependencies build-base \
